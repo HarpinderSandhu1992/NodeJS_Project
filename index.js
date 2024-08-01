@@ -1,7 +1,7 @@
 const express = require("express");
 const sequelize = require("./config");
 const Department = require("./models/department");
-
+const Employer = require("./models/employer");
 
 sequelize
   .sync()
