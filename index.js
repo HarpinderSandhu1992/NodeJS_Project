@@ -28,6 +28,44 @@ app.get("/employers", (req, res) => {
     .catch((error) => res.send(error, 500));
 });
 
+app.get("/employers/:id", (req, res) => {
+  const id = req.params.id;
+  Employer.findByPk(id)
+    .then((employer) => {
+      if (!employer) {
+        return res.status(404).send({ message: "Employer not found" });
+      }
+      res.send(employer);
+    })
+    .catch((error) => res.send(error, 500));
+});
+
+app.patch("/employers/:id", (req, res) => {
+  const id = req.params.id;
+  const { name, department, salary } = req.body;
+  Employer.findByPk(id)
+    .then((employer) => {
+      if (!employer) {
+        return res.status(404).send({ message: "Employer not found" });
+      }
+      console.log(employer);
+      employer.Name = name;
+      employer.Department = department;
+      employer.Salary = salary;
+      employer
+        .save()
+        .then((employer) => {
+          res.send(employer);
+        })
+        .catch((error) => {
+          res.send(error);
+        });
+    })
+    .catch((error) => {
+      res.send(error, 500);
+    });
+});
+
 app.post("/employers", (req, res) => {
   // Get submitted data
   const new_employer = {
@@ -44,4 +82,18 @@ app.post("/employers", (req, res) => {
 });
 app.listen(3000, function () {
   console.log("Server connected");
+});
+
+app.delete("/employers/:id", (req, res) => {
+  const id = req.params.id;
+  Employer.findByPk(id)
+    .then((employer) => {
+      if (!employer) {
+        return res.status(404).send({ message: "Employer not found" });
+      }
+      // Upto here - found employer - now delete employer from database
+      employer.destroy();
+      res.send(employer);
+    })
+    .catch((error) => res.send(error, 500));
 });

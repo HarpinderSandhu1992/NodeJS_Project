@@ -1,6 +1,5 @@
 const { Sequelize, DataTypes } = require("sequelize");
 
-
 // Importing sequelize connection
 const sequelize = require("../config");
 
@@ -25,9 +24,8 @@ const Employer = sequelize.define(
     Department: {
       type: DataTypes.STRING,
       allowNull: false,
-    }
+    },
   },
   { timestamps: false }
 );
-
 module.exports = Employer;
